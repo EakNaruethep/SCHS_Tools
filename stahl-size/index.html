@@ -4,67 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>เทียบขนาดพุกเคมีแบบปั่น Stahl SVA-VE</title>
+<title>ขนาดพุกเคมีแบบปั่น Stahl SVA-VE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap">
 <style>
-/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีตาม style guide ของร้าน
-   กรม #14304D = ขนาดที่เลือก / เทาจาง = ขนาดก่อนหน้า (เล็กกว่าหนึ่งขั้น) / เหลือง #FFCD01 = จุดเน้น */
+/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีตาม style guide ของร้าน (กรม #14304D, เหลือง #FFCD01) */
 :root{--bg:#ffffff;--sunk:#F6F8FA;--ink:#14304D;--text:#3A3F47;--muted:#6B7280;--line:#E3E7ED;--hi:#FFCD01;
-  --cur:#14304D;--prev:#DCE2E9;--prev-ink:#8A97A8;--prev-soft:#F1F3F6;
-  --concrete:#C9CDC8;--concrete-prev:#EEF0F2;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D}
+  --concrete:#C9CDC8;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:Kanit,Tahoma,sans-serif;font-size:17px;line-height:1.5}
 .app{container-type:inline-size;padding:16px}
-.s1{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px}
+.s1{display:grid;grid-template-columns:400px minmax(0,1fr);gap:28px}
 .fig{height:600px;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:8px;touch-action:pan-y;cursor:ew-resize}
 .big{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .big b{font-size:54px;line-height:1;color:var(--ink);font-weight:700;border-bottom:4px solid var(--hi);padding-bottom:2px}
 .big span{color:var(--muted);font-size:17px}
-.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px;font-size:16px}
-.legend span{display:inline-flex;align-items:center;gap:8px}
-.legend i{display:inline-block;width:22px;height:12px;border-radius:3px}
-.legend .c i{background:var(--cur)} .legend .p i{background:var(--prev)}
-.legend .p{color:var(--prev-ink)} .legend .p i{border:1px solid #C3CBD5}
 .rng{margin:14px 0 4px}
 input[type=range]{width:100%;accent-color:var(--ink);height:28px}
 .ticks{display:grid;font-size:15px;color:var(--muted);text-align:center;margin:0 -6px}
 .ticks button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:4px 0;border-radius:6px}
-.ticks button.on{color:#fff;background:var(--cur);font-weight:700;box-shadow:inset 0 -3px 0 var(--hi)}
-.ticks button.pv{color:var(--prev-ink);background:var(--prev-soft);font-weight:400}
+.ticks button.on{color:#fff;background:var(--ink);font-weight:700;box-shadow:inset 0 -3px 0 var(--hi)}
 .rows{display:grid;gap:4px;margin-top:12px}
-.r{display:grid;grid-template-columns:150px minmax(0,1fr) 150px;gap:12px;align-items:center;font-size:17px;min-height:56px;border-bottom:1px solid var(--line)}
-.bars{display:grid;gap:3px}
-.bars i{display:block;height:10px;border-radius:3px;transition:width .25s ease}
-.bars .bp{background:var(--prev);height:8px} .bars .bc{background:var(--cur);height:12px}
-.v{text-align:right;color:var(--ink);font-weight:700;line-height:1.25}
+.r{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:12px;align-items:center;font-size:17px;min-height:52px;border-bottom:1px solid var(--line)}
+.bar{height:12px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:3px;transition:width .25s ease}
+.v{text-align:right;color:var(--ink);font-weight:700}
 .v small{color:var(--muted);font-weight:400;font-size:14px}
-.v .pvv{display:block;font-size:14px;font-weight:400;color:var(--prev-ink)}
 .fine{font-size:15px;color:var(--muted);margin:10px 0 0}
 svg{display:block;width:100%;height:100%}
-.cc{fill:var(--concrete)} .ccp{fill:var(--concrete-prev)} .ccd{fill:var(--dot)} .hl{fill:var(--hole)} .rs{fill:var(--resin)}
+.cc{fill:var(--concrete)} .ccd{fill:var(--dot)} .hl{fill:var(--hole)} .rs{fill:var(--resin)}
 .st{fill:var(--stud);stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
-.stp{fill:var(--prev);stroke:var(--prev-ink);stroke-width:1;vector-effect:non-scaling-stroke}
-.nut{fill:var(--edge)} .nutp{fill:var(--prev-ink)}
+.th{stroke:var(--edge);stroke-width:.8;opacity:.55}
+.nut{fill:var(--edge)}
 .dim{stroke:var(--ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke}
-.dimp{stroke:var(--prev-ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke}
+.dash{stroke-dasharray:5 4}
 .t{font-family:Kanit,Tahoma,sans-serif;font-weight:600}
-.tc{fill:var(--ink)} .tp{fill:var(--prev-ink)}
-.tag{font-family:Kanit,Tahoma,sans-serif;font-weight:700}
+.tc{fill:var(--ink)} .tl{fill:var(--muted);font-weight:400}
 button:focus-visible,input:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
 @container (max-width:600px){
   .app{padding:12px 4px}
   .s1{grid-template-columns:1fr;gap:12px}
-  .fig{height:270px}
+  .fig{height:285px}
   .big b{font-size:40px}
-  .legend{font-size:15px;gap:14px}
   .rng{margin:8px 0 2px}
   .rows{gap:0;margin-top:6px}
-  .r{grid-template-columns:minmax(0,1fr) auto;font-size:16px;min-height:40px}
-  .bars{display:none}
-  .v{display:flex;gap:6px;align-items:baseline;justify-content:flex-end;flex-wrap:wrap}
-  .v .pvv{display:inline;order:-1}
+  .r{grid-template-columns:minmax(0,1fr) auto;font-size:16px;min-height:38px}
+  .bar{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -95,38 +81,50 @@ const START=Math.max(0,D.findIndex(d=>d.m===(q.get('size')||'M16').toUpperCase()
 const MAX=Object.fromEntries(ROWS.map(r=>[r.k,Math.max(...D.map(d=>d[r.k]))]));
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 
-// วาดพุกหนึ่งตัวในก้อนคอนกรีตของตัวเอง (มิลลิเมตรจริง) เริ่มที่ x=ox
-function anchor(d,ox,fs,prev){
-  const top=-(d.stud-d.emb), sx=ox+d.edge, W=d.edge+d.drill/2+fs*4.8, ex=sx+d.drill/2+fs*.5, t=fs*.3;
-  const C=prev?'p':'c';
-  let s=`<rect x="${ox}" y="0" width="${W}" height="${d.thk}" class="${prev?'ccp':'cc'}"/>`;
+// วาดพุกที่เลือกพร้อมระยะครบทุกค่าในตาราง (มิลลิเมตรจริง ซูมให้พอดีกรอบ)
+function figure(d){
+  const top=-(d.stud-d.emb), H=d.thk-top, fs=Math.max(H*0.062,10), t=fs*.3;
+  const sx=d.edge, hw=d.drill/2;
+  const x1=sx+hw+fs*.6;   // เส้นวัดความลึกติดตั้ง
+  const x2=x1+fs*3.3;     // เส้นวัดความลึกรูเจาะ
+  const R=x2+fs*3.6;      // ขอบขวาของคอนกรีต
+  const x3=R+fs*.7;       // เส้นวัดความหนาคอนกรีต
+  const xs=-fs*.9;        // เส้นวัดความยาวสตัด (ซ้าย นอกคอนกรีต)
+  const vx=xs-fs*3.7, vy=top-fs*.6, vw=x3+fs*.9-vx, vh=d.thk+fs*2.5-vy;
+  const N=(v)=>`<tspan class="tc" font-size="${fs}">${v}</tspan>`;
+  const L=(x,y,txt,o='')=>`<text x="${x}" y="${y}" class="t tl" font-size="${fs*.78}" ${o}>${txt}</text>`;
+  const V=(x,y,txt,o='')=>`<text x="${x}" y="${y}" class="t tc" font-size="${fs}" ${o}>${txt}</text>`;
+  const bar=(x,y0,y1)=>`<path d="M${x-t} ${y0}h${2*t}M${x-t} ${y1}h${2*t}M${x} ${y0}V${y1}" class="dim"/>`;
+  let s=`<svg viewBox="${vx} ${vy} ${vw} ${vh}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ภาพตัดพุกเคมี ${d.m} ดอกสว่าน ${d.drill} มม. เจาะลึก ${d.hole} มม. ฝังลึก ${d.emb} มม. สตัดยาว ${d.stud} มม. ขันน็อต ${d.torque} Nm ระยะขอบ ${d.edge} มม. คอนกรีตหนา ${d.thk} มม.">`;
+  s+=`<rect x="0" y="0" width="${R}" height="${d.thk}" class="cc"/>`;
   const st=fs*1.5;
-  for(let y=st/2,r=0;y<d.thk;y+=st,r++)for(let x=ox+st/2+(r%2?st/2:0);x<ox+W;x+=st)s+=`<circle cx="${x}" cy="${y}" r="${(fs*.08).toFixed(1)}" class="ccd" opacity="${prev?.5:1}"/>`;
-  s+=`<rect x="${sx-d.drill/2}" y="0" width="${d.drill}" height="${d.hole}" class="hl" opacity="${prev?.45:1}"/>`;
-  s+=`<rect x="${sx-d.drill/2}" y="0" width="${d.drill}" height="${d.emb}" class="rs" opacity="${prev?.45:1}"/>`;
-  s+=`<rect x="${sx-d.n/2}" y="${top}" width="${d.n}" height="${d.stud}" class="${prev?'stp':'st'}"/>`;
-  s+=`<rect x="${sx-d.n}" y="-3" width="${d.n*2}" height="3" class="${prev?'nutp':'nut'}"/>`;
-  s+=`<rect x="${sx-d.n*.85}" y="${-3-d.n*.8}" width="${d.n*1.7}" height="${d.n*.8}" class="${prev?'nutp':'nut'}"/>`;
-  // ป้ายชื่อขนาดเหนือสตัด
-  s+=`<text x="${sx}" y="${top-fs*.5}" text-anchor="middle" class="tag t${C}" font-size="${fs*1.35}">${d.m}</text>`;
-  s+=`<text x="${sx}" y="${top-fs*1.85}" text-anchor="middle" class="t t${C}" font-size="${fs*.8}">${prev?'ขนาดก่อนหน้า':'ที่เลือก'}</text>`;
-  // ระยะฝัง
-  s+=`<path d="M${ex-t} 0h${2*t}M${ex-t} ${d.emb}h${2*t}M${ex} 0V${d.emb}" class="dim${prev?'p':''}"/>`;
-  s+=`<text x="${ex+fs*.35}" y="${d.emb/2-fs*.15}" class="t t${C}" font-size="${fs*.85}">ฝัง</text>`;
-  s+=`<text x="${ex+fs*.35}" y="${d.emb/2+fs*.85}" class="t t${C}" font-size="${fs}">${d.emb}</text>`;
-  // ความหนาคอนกรีต
-  s+=`<text x="${ox+W/2}" y="${d.thk+fs*1.25}" text-anchor="middle" class="t t${C}" font-size="${fs}">หนา ${d.thk}</text>`;
-  return {s,W,top};
-}
-function figure(d,p){
-  const H=d.thk+(d.stud-d.emb), fs=Math.max(H*0.072,11);
-  let x=0;
-  const parts=[];
-  if(p){const a=anchor(p,x,fs,true);parts.push(a);x+=a.W+fs*1.2;}
-  const b=anchor(d,x,fs,false);parts.push(b);x+=b.W;
-  const minTop=Math.min(...parts.map(a=>a.top));
-  const vy=minTop-fs*2.7, vh=d.thk+fs*1.7-vy;
-  return `<svg viewBox="${-fs*.3} ${vy} ${x+fs*.6} ${vh}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ภาพตัดพุกเคมี ${d.m}${p?' เทียบกับ '+p.m:''}">${parts.map(a=>a.s).join('')}</svg>`;
+  for(let y=st/2,r=0;y<d.thk;y+=st,r++)for(let x=st/2+(r%2?st/2:0);x<R;x+=st)s+=`<circle cx="${x}" cy="${y}" r="${(fs*.08).toFixed(1)}" class="ccd"/>`;
+  s+=`<rect x="${sx-hw}" y="0" width="${d.drill}" height="${d.hole}" class="hl"/>`;
+  s+=`<rect x="${sx-hw}" y="0" width="${d.drill}" height="${d.emb}" class="rs"/>`;
+  s+=`<rect x="${sx-d.n/2}" y="${top}" width="${d.n}" height="${d.stud}" class="st"/>`;
+  for(let y=top+4;y<d.emb;y+=6)s+=`<line x1="${sx-d.n/2}" x2="${sx+d.n/2}" y1="${y}" y2="${y+3}" class="th"/>`;
+  s+=`<rect x="${sx-d.n}" y="-3" width="${d.n*2}" height="3" class="nut"/>`;
+  s+=`<rect x="${sx-d.n*.85}" y="${-3-d.n*.8}" width="${d.n*1.7}" height="${d.n*.8}" class="nut"/>`;
+  // ความยาวสตัด (ซ้าย)
+  s+=bar(xs,top,d.emb)+`<path d="M${xs} ${top}H${sx-d.n/2}M${xs} ${d.emb}H${sx-d.n/2}" class="dim dash"/>`;
+  s+=L(xs-fs*.35,(top+d.emb)/2-fs*.2,'สตัดยาว','text-anchor="end"')+V(xs-fs*.35,(top+d.emb)/2+fs*.9,d.stud,'text-anchor="end"');
+  // ระยะขอบ (ใต้คอนกรีต วัดจากขอบถึงแกนพุก)
+  const ey=d.thk+fs*.7;
+  s+=`<path d="M0 ${ey-t}v${2*t}M${sx} ${ey-t}v${2*t}M0 ${ey}H${sx}M${sx} ${d.thk}V${ey}" class="dim"/>`;
+  s+=L(0,d.thk+fs*2.0,'ระยะขอบ '+N(d.edge));
+  // แรงบิด (ข้างน็อต)
+  s+=L(sx+d.n+fs*.3,-fs*.35,'ขันน็อต '+N(d.torque+' Nm'));
+  // ความลึกติดตั้ง
+  s+=bar(x1,0,d.emb)+L(x1+fs*.3,d.emb*.4,'ฝัง')+V(x1+fs*.3,d.emb*.4+fs*1.05,d.emb);
+  // ความลึกรูเจาะ
+  s+=bar(x2,0,d.hole)+`<path d="M${sx+hw} ${d.hole}H${x2}" class="dim dash"/>`;
+  s+=L(x2+fs*.3,d.hole*.62,'เจาะลึก')+V(x2+fs*.3,d.hole*.62+fs*1.05,d.hole);
+  // ดอกสว่าน (ใต้รู)
+  s+=`<path d="M${sx-hw} ${d.hole+fs*.45}H${sx+hw}M${sx-hw} ${d.hole+fs*.2}v${fs*.5}M${sx+hw} ${d.hole+fs*.2}v${fs*.5}" class="dim"/>`;
+  s+=L(sx+hw+fs*.3,d.hole+fs*1.0,'ดอกสว่าน '+N('Ø'+d.drill));
+  // ความหนาคอนกรีต (ขวา)
+  s+=bar(x3,0,d.thk)+L(x3,d.thk+fs*2.0,'คอนกรีตหนา '+N(d.thk),'text-anchor="end"');
+  return s+'</svg>';
 }
 
 const root=$('#app');
@@ -135,25 +133,21 @@ root.innerHTML=`<div class="s1">
   <div class="fig" aria-live="polite"></div>
   <div>
     <div class="big"><b></b><span></span></div>
-    <div class="legend"></div>
     <div class="rng"><input type="range" min="0" max="${D.length-1}" step="1" aria-label="เลือกขนาดพุกเคมี"></div>
     <div class="ticks" style="grid-template-columns:repeat(${D.length},1fr)">${D.map((d,k)=>`<button data-k="${k}">${d.m}</button>`).join('')}</div>
     <div class="rows"></div>
-    <p class="fine">ค่าทั้งหมดเป็นเงื่อนไขขั้นต่ำสำหรับการติดตั้ง งานโครงสร้างต้องให้วิศวกรกำหนดขนาดเสมอ</p>
+    <p class="fine">หน่วยในรูปเป็นมิลลิเมตร ค่าทั้งหมดเป็นเงื่อนไขขั้นต่ำสำหรับการติดตั้ง งานโครงสร้างต้องให้วิศวกรกำหนดขนาดเสมอ</p>
   </div></div>`;
 const fig=$('.fig'), rng=$('input');
 function paint(){
-  const d=D[i], p=i>0?D[i-1]:null;
-  fig.innerHTML=figure(d,p);
+  const d=D[i];
+  fig.innerHTML=figure(d);
   $('.big b').textContent=d.m;
   $('.big span').textContent=`Stahl ${d.cap} · หลอด ${d.capSz} มม.`;
-  $('.legend').innerHTML=`<span class="c"><i></i>${d.m} ที่เลือก</span>`+(p?`<span class="p"><i></i>${p.m} ขนาดก่อนหน้า</span>`:`<span class="p">ขนาดเล็กที่สุดของรุ่นนี้</span>`);
-  rng.value=i; $$('.ticks button').forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.toggle('pv',k===i-1)});
-  $('.rows').innerHTML=ROWS.map(r=>{
-    const dv=p?d[r.k]-p[r.k]:0;
-    return `<div class="r"><span>${r.l}</span>
-    <span class="bars">${p?`<i class="bp" style="width:${p[r.k]/MAX[r.k]*100}%"></i>`:''}<i class="bc" style="width:${d[r.k]/MAX[r.k]*100}%"></i></span>
-    <span class="v">${d[r.k]} <small>${r.u}</small>${p?`<span class="pvv">${p.m} ${p[r.k]} ${dv?`(${dv>0?'+':'−'}${Math.abs(dv)})`:'(เท่ากัน)'}</span>`:''}</span></div>`}).join('');
+  rng.value=i; $$('.ticks button').forEach((b,k)=>b.classList.toggle('on',k===i));
+  $('.rows').innerHTML=ROWS.map(r=>`<div class="r"><span>${r.l}</span>
+    <span class="bar"><i style="width:${d[r.k]/MAX[r.k]*100}%"></i></span>
+    <span class="v">${d[r.k]} <small>${r.u}</small></span></div>`).join('');
 }
 rng.addEventListener('input',()=>{i=+rng.value;paint()});
 $$('.ticks button').forEach(b=>b.onclick=()=>{i=+b.dataset.k;paint()});
