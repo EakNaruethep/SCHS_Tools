@@ -9,53 +9,62 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap">
 <style>
-/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีและฟอนต์ตาม style guide ของร้าน */
+/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีและฟอนต์ตาม style guide ของร้าน
+   สีกรมเข้ม = ขนาดที่เลือก / สีฟ้าอ่อน = ขนาดก่อนหน้า (เล็กกว่าหนึ่งขั้น) */
 :root{--bg:#ffffff;--sunk:#F6F8FA;--ink:#14304D;--text:#3A3F47;--muted:#6B7280;--line:#E3E7ED;--hi:#FFCD01;
-  --concrete:#C9CDC8;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D;--ghost:#2F617F}
+  --cur:#14304D;--prev:#7FA8C9;--prev-ink:#3C6E94;--prev-soft:#E4EEF6;
+  --concrete:#C9CDC8;--concrete-prev:#DDE4E9;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:Kanit,Tahoma,sans-serif;font-size:17px;line-height:1.5}
 .app{container-type:inline-size;padding:16px}
-.s1{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px}
-.fig{height:620px;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:10px;touch-action:pan-y;cursor:ew-resize;position:relative}
-.tip{position:absolute;left:10px;bottom:6px;font-size:13px;color:var(--muted)}
-.big{display:flex;align-items:baseline;gap:12px}
+.s1{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px}
+.fig{height:600px;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:8px;touch-action:pan-y;cursor:ew-resize}
+.big{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .big b{font-size:54px;line-height:1;color:var(--ink);font-weight:700}
 .big span{color:var(--muted);font-size:17px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px;font-size:16px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:22px;height:12px;border-radius:3px}
+.legend .c i{background:var(--cur)} .legend .p i{background:var(--prev)}
+.legend .p{color:var(--prev-ink)}
 .rng{margin:14px 0 4px}
 input[type=range]{width:100%;accent-color:var(--ink);height:28px}
 .ticks{display:grid;font-size:15px;color:var(--muted);text-align:center;margin:0 -6px}
-.ticks button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:4px 0}
-.ticks button.on{color:var(--ink);font-weight:700}
-.rows{display:grid;gap:6px;margin-top:12px}
-.r{display:grid;grid-template-columns:150px minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:17px;min-height:56px}
-.bar{height:8px;background:var(--line);border-radius:4px;position:relative;overflow:hidden}
-.bar i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:4px;transition:width .25s ease}
-.bar u{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--hi)}
-.v{text-align:right;font-weight:600;color:var(--ink)}
-.v small{color:var(--muted);font-weight:400;font-size:13px}
-.delta{font-size:14px;color:var(--ghost);display:block;line-height:1.2;font-weight:400}
+.ticks button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:4px 0;border-radius:6px}
+.ticks button.on{color:#fff;background:var(--cur);font-weight:700}
+.ticks button.pv{color:var(--prev-ink);background:var(--prev-soft);font-weight:600}
+.rows{display:grid;gap:4px;margin-top:12px}
+.r{display:grid;grid-template-columns:150px minmax(0,1fr) 150px;gap:12px;align-items:center;font-size:17px;min-height:56px;border-bottom:1px solid var(--line)}
+.bars{display:grid;gap:3px}
+.bars i{display:block;height:10px;border-radius:3px;transition:width .25s ease}
+.bars .bp{background:var(--prev)} .bars .bc{background:var(--cur);height:12px}
+.v{text-align:right;color:var(--ink);font-weight:700;line-height:1.25}
+.v small{color:var(--muted);font-weight:400;font-size:14px}
+.v .pvv{display:block;font-size:14px;font-weight:600;color:var(--prev-ink)}
 .fine{font-size:15px;color:var(--muted);margin:10px 0 0}
-.cmp{font-size:15px;color:var(--ghost);margin-top:4px}
-svg{display:block;width:100%;height:100%;overflow:visible}
-.cc{fill:var(--concrete)}.ccd{fill:var(--dot)}.hl{fill:var(--hole)}.rs{fill:var(--resin)}
-.st{fill:var(--stud);stroke:var(--edge);stroke-width:1}.th{stroke:var(--edge);stroke-width:.8;opacity:.55}.nut{fill:var(--edge)}
-.dim{stroke:var(--ink);stroke-width:1.4;fill:none;vector-effect:non-scaling-stroke}.dt{fill:var(--ink);font-family:Kanit,Tahoma,sans-serif;font-size:var(--fs);font-weight:600}
-.gh{fill:none;stroke:var(--ghost);stroke-width:2;stroke-dasharray:6 5;vector-effect:non-scaling-stroke}.ght{fill:var(--ghost);font-family:Kanit,Tahoma,sans-serif;font-size:var(--fs);font-weight:600}
+svg{display:block;width:100%;height:100%}
+.cc{fill:var(--concrete)} .ccp{fill:var(--concrete-prev)} .ccd{fill:var(--dot)} .hl{fill:var(--hole)} .rs{fill:var(--resin)}
+.st{fill:var(--stud);stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
+.stp{fill:var(--prev);stroke:var(--prev-ink);stroke-width:1;vector-effect:non-scaling-stroke}
+.nut{fill:var(--edge)} .nutp{fill:var(--prev-ink)}
+.dim{stroke:var(--ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke}
+.dimp{stroke:var(--prev-ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke}
+.t{font-family:Kanit,Tahoma,sans-serif;font-weight:600}
+.tc{fill:var(--ink)} .tp{fill:var(--prev-ink)}
+.tag{font-family:Kanit,Tahoma,sans-serif;font-weight:700}
 button:focus-visible,input:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
-@container (max-width:560px){
-  .s1{grid-template-columns:1fr;gap:12px}
+@container (max-width:600px){
   .app{padding:12px 4px}
-  .big b{font-size:38px}
+  .s1{grid-template-columns:1fr;gap:12px}
+  .fig{height:270px}
+  .big b{font-size:40px}
+  .legend{font-size:15px;gap:14px}
   .rng{margin:8px 0 2px}
-  .rows{gap:2px;margin-top:8px}
-  .big{flex-direction:column;align-items:flex-start;gap:2px}
-  .r{grid-template-columns:minmax(0,1fr) auto;font-size:16px;min-height:36px;border-bottom:1px solid var(--line)}
-  .r .bar{display:none}
-  .v{display:flex;gap:8px;align-items:baseline;justify-content:flex-end}
-  .delta{display:inline}
-  .fig{height:290px}
-  .tip{display:none}
-  .fine .long{display:none}
+  .rows{gap:0;margin-top:6px}
+  .r{grid-template-columns:minmax(0,1fr) auto;font-size:16px;min-height:40px}
+  .bars{display:none}
+  .v{display:flex;gap:6px;align-items:baseline;justify-content:flex-end;flex-wrap:wrap}
+  .v .pvv{display:inline;order:-1}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -81,40 +90,43 @@ const ROWS=[
  {k:'edge',l:'ระยะขอบต่ำสุด',u:'มม.'},
  {k:'thk',l:'คอนกรีตหนาต่ำสุด',u:'มม.'}];
 // เปิดมาที่ M16 (ขนาดที่คนค้นมากสุด) เปลี่ยนได้ด้วย ?size=M12 ใน URL ของ iframe
-// ทุกขนาดเทียบกับขนาดก่อนหน้าหนึ่งขั้น (เส้นประในรูป และขีดเหลืองในแถบ)
 const q=new URLSearchParams(location.search);
 const START=Math.max(0,D.findIndex(d=>d.m===(q.get('size')||'M16').toUpperCase()));
 const MAX=Object.fromEntries(ROWS.map(r=>[r.k,Math.max(...D.map(d=>d[r.k]))]));
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-function diff(a,b,k){const d=b[k]-a[k];if(!d)return 'เท่ากับ '+a.m;const u=ROWS.find(r=>r.k===k).u;return (d>0?'+':'−')+Math.abs(d)+' '+u+' จาก '+a.m}
 
-function sect(d,g){
-  // ซูมรูปให้พอดีกับขนาดที่เลือก ขนาดก่อนหน้า (เส้นประ) ใช้สเกลเดียวกันในรูปเดียวกัน
-  const top=-(d.stud-d.emb), base=top-d.n*.8-3, fs=(d.thk-base)*0.075;
-  const ex=d.drill/2+fs*.5, R=ex+fs*4.6, tx=R+fs*.6;
-  const vx=Math.min(-d.edge-fs*.4,-d.n-fs*4.2), vy=base-fs*2.2, vw=tx+fs*.8-vx, vh=d.thk+fs*1.9-vy;
-  let s=`<svg viewBox="${vx} ${vy} ${vw} ${vh}" preserveAspectRatio="xMidYMid meet" style="--fs:${fs.toFixed(1)}px" role="img" aria-label="ภาพตัดพุกเคมี ${d.m} ฝังลึก ${d.emb} มม. ในคอนกรีตหนา ${d.thk} มม.">`;
-  s+=`<rect x="${-d.edge}" y="0" width="${d.edge+R}" height="${d.thk}" class="cc"/>`;
-  const st=Math.max(14,fs*1.4);
-  for(let y=st/2,r=0;y<d.thk;y+=st,r++)for(let x=-d.edge+st/2+(r%2?st/2:0);x<R;x+=st)s+=`<circle cx="${x}" cy="${y}" r="${(fs*.09).toFixed(1)}" class="ccd"/>`;
-  s+=`<rect x="${-d.drill/2}" y="0" width="${d.drill}" height="${d.hole}" class="hl"/>`;
-  s+=`<rect x="${-d.drill/2}" y="0" width="${d.drill}" height="${d.emb}" class="rs"/>`;
-  s+=`<rect x="${-d.n/2}" y="${top}" width="${d.n}" height="${d.stud}" class="st"/>`;
-  for(let y=top+4;y<d.emb;y+=6)s+=`<line x1="${-d.n/2}" x2="${d.n/2}" y1="${y}" y2="${y+3}" class="th"/>`;
-  s+=`<rect x="${-d.n}" y="-3" width="${d.n*2}" height="3" class="nut"/>`;
-  s+=`<rect x="${-d.n*.85}" y="${-3-d.n*.8}" width="${d.n*1.7}" height="${d.n*.8}" class="nut"/>`;
-  if(g){const gt=-(g.stud-g.emb);
-    s+=`<rect x="${-g.n/2}" y="${gt}" width="${g.n}" height="${g.stud}" class="gh"/>`;
-    s+=`<line x1="${-g.edge}" x2="${R}" y1="${g.thk}" y2="${g.thk}" class="gh"/>`;
-    s+=`<text x="${-d.drill/2-fs*.3}" y="${g.thk-fs*.35}" text-anchor="end" class="ght">${g.m}</text>`;}
-  const t=fs*.35, ey=base-fs*.7;
-  s+=`<path d="M${-d.edge} ${ey-t}v${2*t}M0 ${ey-t}v${2*t}M${-d.edge} ${ey}H0" class="dim"/>`;
-  s+=`<text x="${-d.edge}" y="${ey-fs*.5}" class="dt">ขอบ ${d.edge}</text>`;
-  s+=`<path d="M${ex-t} 0h${2*t}M${ex-t} ${d.emb}h${2*t}M${ex} 0V${d.emb}" class="dim"/>`;
-  s+=`<text x="${ex+fs*.4}" y="${d.emb/2+fs*.35}" class="dt">ฝัง ${d.emb}</text>`;
-  s+=`<path d="M${tx-t} 0h${2*t}M${tx-t} ${d.thk}h${2*t}M${tx} 0V${d.thk}" class="dim"/>`;
-  s+=`<text x="${tx}" y="${d.thk+fs*1.3}" text-anchor="end" class="dt">หนา ${d.thk}</text>`;
-  return s+'</svg>';
+// วาดพุกหนึ่งตัวในก้อนคอนกรีตของตัวเอง (มิลลิเมตรจริง) เริ่มที่ x=ox
+function anchor(d,ox,fs,prev){
+  const top=-(d.stud-d.emb), sx=ox+d.edge, W=d.edge+d.drill/2+fs*4.8, ex=sx+d.drill/2+fs*.5, t=fs*.3;
+  const C=prev?'p':'c';
+  let s=`<rect x="${ox}" y="0" width="${W}" height="${d.thk}" class="${prev?'ccp':'cc'}"/>`;
+  const st=fs*1.5;
+  for(let y=st/2,r=0;y<d.thk;y+=st,r++)for(let x=ox+st/2+(r%2?st/2:0);x<ox+W;x+=st)s+=`<circle cx="${x}" cy="${y}" r="${(fs*.08).toFixed(1)}" class="ccd" opacity="${prev?.5:1}"/>`;
+  s+=`<rect x="${sx-d.drill/2}" y="0" width="${d.drill}" height="${d.hole}" class="hl" opacity="${prev?.45:1}"/>`;
+  s+=`<rect x="${sx-d.drill/2}" y="0" width="${d.drill}" height="${d.emb}" class="rs" opacity="${prev?.45:1}"/>`;
+  s+=`<rect x="${sx-d.n/2}" y="${top}" width="${d.n}" height="${d.stud}" class="${prev?'stp':'st'}"/>`;
+  s+=`<rect x="${sx-d.n}" y="-3" width="${d.n*2}" height="3" class="${prev?'nutp':'nut'}"/>`;
+  s+=`<rect x="${sx-d.n*.85}" y="${-3-d.n*.8}" width="${d.n*1.7}" height="${d.n*.8}" class="${prev?'nutp':'nut'}"/>`;
+  // ป้ายชื่อขนาดเหนือสตัด
+  s+=`<text x="${sx}" y="${top-fs*.5}" text-anchor="middle" class="tag t${C}" font-size="${fs*1.35}">${d.m}</text>`;
+  s+=`<text x="${sx}" y="${top-fs*1.85}" text-anchor="middle" class="t t${C}" font-size="${fs*.8}">${prev?'ขนาดก่อนหน้า':'ที่เลือก'}</text>`;
+  // ระยะฝัง
+  s+=`<path d="M${ex-t} 0h${2*t}M${ex-t} ${d.emb}h${2*t}M${ex} 0V${d.emb}" class="dim${prev?'p':''}"/>`;
+  s+=`<text x="${ex+fs*.35}" y="${d.emb/2-fs*.15}" class="t t${C}" font-size="${fs*.85}">ฝัง</text>`;
+  s+=`<text x="${ex+fs*.35}" y="${d.emb/2+fs*.85}" class="t t${C}" font-size="${fs}">${d.emb}</text>`;
+  // ความหนาคอนกรีต
+  s+=`<text x="${ox+W/2}" y="${d.thk+fs*1.25}" text-anchor="middle" class="t t${C}" font-size="${fs}">หนา ${d.thk}</text>`;
+  return {s,W,top};
+}
+function figure(d,p){
+  const H=d.thk+(d.stud-d.emb), fs=Math.max(H*0.072,11);
+  let x=0;
+  const parts=[];
+  if(p){const a=anchor(p,x,fs,true);parts.push(a);x+=a.W+fs*1.2;}
+  const b=anchor(d,x,fs,false);parts.push(b);x+=b.W;
+  const minTop=Math.min(...parts.map(a=>a.top));
+  const vy=minTop-fs*2.7, vh=d.thk+fs*1.7-vy;
+  return `<svg viewBox="${-fs*.3} ${vy} ${x+fs*.6} ${vh}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ภาพตัดพุกเคมี ${d.m}${p?' เทียบกับ '+p.m:''}">${parts.map(a=>a.s).join('')}</svg>`;
 }
 
 const root=$('#app');
@@ -123,23 +135,25 @@ root.innerHTML=`<div class="s1">
   <div class="fig" aria-live="polite"></div>
   <div>
     <div class="big"><b></b><span></span></div>
-    <div class="cmp"></div>
+    <div class="legend"></div>
     <div class="rng"><input type="range" min="0" max="${D.length-1}" step="1" aria-label="เลือกขนาดพุกเคมี"></div>
     <div class="ticks" style="grid-template-columns:repeat(${D.length},1fr)">${D.map((d,k)=>`<button data-k="${k}">${d.m}</button>`).join('')}</div>
     <div class="rows"></div>
-    <p class="fine">เส้นประในรูปคือขนาดก่อนหน้า<span class="long"> และขีดเหลืองในแถบคือค่าของขนาดก่อนหน้า ไว้ดูว่าขยับขึ้นหนึ่งขนาดต้องเปลี่ยนอะไร</span> ค่าทั้งหมดเป็นเงื่อนไขขั้นต่ำ งานโครงสร้างต้องให้วิศวกรกำหนดขนาดเสมอ</p>
+    <p class="fine">ค่าทั้งหมดเป็นเงื่อนไขขั้นต่ำสำหรับการติดตั้ง งานโครงสร้างต้องให้วิศวกรกำหนดขนาดเสมอ</p>
   </div></div>`;
 const fig=$('.fig'), rng=$('input');
 function paint(){
   const d=D[i], p=i>0?D[i-1]:null;
-  fig.innerHTML=sect(d,p)+'<span class="tip">ลากซ้าย/ขวาบนรูปเพื่อเปลี่ยนขนาด</span>';
+  fig.innerHTML=figure(d,p);
   $('.big b').textContent=d.m;
-  $('.big span').innerHTML=`Stahl ${d.cap} · หลอด ${d.capSz} มม. `;
-  $('.cmp').textContent=p?'เทียบกับขนาดก่อนหน้า '+p.m:'ขนาดเล็กที่สุดของรุ่นนี้';
-  rng.value=i; $$('.ticks button').forEach((b,k)=>b.classList.toggle('on',k===i));
-  $('.rows').innerHTML=ROWS.map(r=>`<div class="r"><span>${r.l}</span>
-    <span class="bar"><i style="width:${d[r.k]/MAX[r.k]*100}%"></i>${p?`<u style="left:${p[r.k]/MAX[r.k]*100}%"></u>`:''}</span>
-    <span class="v">${d[r.k]} <small>${r.u}</small><span class="delta">${p?diff(p,d,r.k):'&nbsp;'}</span></span></div>`).join('');
+  $('.big span').textContent=`Stahl ${d.cap} · หลอด ${d.capSz} มม.`;
+  $('.legend').innerHTML=`<span class="c"><i></i>${d.m} ที่เลือก</span>`+(p?`<span class="p"><i></i>${p.m} ขนาดก่อนหน้า</span>`:`<span class="p">ขนาดเล็กที่สุดของรุ่นนี้</span>`);
+  rng.value=i; $$('.ticks button').forEach((b,k)=>{b.classList.toggle('on',k===i);b.classList.toggle('pv',k===i-1)});
+  $('.rows').innerHTML=ROWS.map(r=>{
+    const dv=p?d[r.k]-p[r.k]:0;
+    return `<div class="r"><span>${r.l}</span>
+    <span class="bars">${p?`<i class="bp" style="width:${p[r.k]/MAX[r.k]*100}%"></i>`:''}<i class="bc" style="width:${d[r.k]/MAX[r.k]*100}%"></i></span>
+    <span class="v">${d[r.k]} <small>${r.u}</small>${p?`<span class="pvv">${p.m} ${p[r.k]} ${dv?`(${dv>0?'+':'−'}${Math.abs(dv)})`:'(เท่ากัน)'}</span>`:''}</span></div>`}).join('');
 }
 rng.addEventListener('input',()=>{i=+rng.value;paint()});
 $$('.ticks button').forEach(b=>b.onclick=()=>{i=+b.dataset.k;paint()});
