@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>เทียบขนาดพุกเคมีแบบปั่น Stahl SVA-VE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap">
+<style>
+/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีและฟอนต์ตาม style guide ของร้าน */
+:root{--bg:#ffffff;--sunk:#F6F8FA;--ink:#14304D;--text:#3A3F47;--muted:#6B7280;--line:#E3E7ED;--hi:#FFCD01;
+  --concrete:#C9CDC8;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D;--ghost:#2F617F}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Kanit,Tahoma,sans-serif;font-size:16px;line-height:1.5}
+.app{container-type:inline-size;padding:16px}
+.s1{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px}
+.fig{height:400px;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:10px;touch-action:pan-y;cursor:ew-resize;position:relative}
+.tip{position:absolute;left:10px;bottom:6px;font-size:12px;color:var(--muted)}
+.big{display:flex;align-items:baseline;gap:12px}
+.big b{font-size:54px;line-height:1;color:var(--ink);font-weight:700}
+.big span{color:var(--muted);font-size:15px}
+.rng{margin:14px 0 4px}
+input[type=range]{width:100%;accent-color:var(--ink);height:28px}
+.ticks{display:grid;font-size:13px;color:var(--muted);text-align:center;margin:0 -6px}
+.ticks button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:4px 0}
+.ticks button.on{color:var(--ink);font-weight:700}
+.rows{display:grid;gap:6px;margin-top:12px}
+.r{display:grid;grid-template-columns:150px minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:15px;min-height:36px}
+.bar{height:8px;background:var(--line);border-radius:4px;position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:4px;transition:width .25s ease}
+.bar u{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--hi)}
+.v{text-align:right;font-weight:600;color:var(--ink)}
+.v small{color:var(--muted);font-weight:400;font-size:12px}
+.delta{font-size:12px;color:var(--ghost);display:block;line-height:1.2;font-weight:400}
+.fine{font-size:13px;color:var(--muted);margin:10px 0 0}
+.here{display:inline-block;font-size:11px;font-weight:600;background:var(--ink);color:#fff;border-radius:4px;padding:0 6px;line-height:18px;vertical-align:middle}
+svg{display:block;width:100%;height:100%;overflow:visible}
+.cc{fill:var(--concrete)}.ccd{fill:var(--dot)}.hl{fill:var(--hole)}.rs{fill:var(--resin)}
+.st{fill:var(--stud);stroke:var(--edge);stroke-width:1}.th{stroke:var(--edge);stroke-width:.8;opacity:.55}.nut{fill:var(--edge)}
+.dim{stroke:var(--ink);stroke-width:1.4;fill:none}.dt{fill:var(--ink);font-family:Kanit,Tahoma,sans-serif;font-size:17px;font-weight:600}
+.gh{fill:none;stroke:var(--ghost);stroke-width:2;stroke-dasharray:6 5}.ght{fill:var(--ghost);font-family:Kanit,Tahoma,sans-serif;font-size:16px;font-weight:600}
+button:focus-visible,input:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+@container (max-width:560px){
+  .s1{grid-template-columns:1fr;gap:12px}
+  .fig{height:260px}
+  .big b{font-size:42px}
+  .big{flex-direction:column;align-items:flex-start;gap:2px}
+  .r{grid-template-columns:118px minmax(0,1fr) 84px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+// ค่าติดตั้งพุกเคมีแบบปั่น Stahl SVA-VE จากแผ่นสเปก (ไม่มีค่ารับแรงตามกฎของร้าน)
+const D=[
+ {m:'M8', cap:'SVA-VE-8', capSz:'8 x 83', n:8, drill:10,hole:85, emb:80, stud:110,torque:10, edge:40, thk:120},
+ {m:'M10',cap:'SVA-VE-10',capSz:'10 x 83',n:10,drill:12,hole:95, emb:90, stud:130,torque:20, edge:45, thk:130},
+ {m:'M12',cap:'SVA-VE-12',capSz:'12 x 95',n:12,drill:14,hole:115,emb:110,stud:160,torque:40, edge:55, thk:140},
+ {m:'M16',cap:'SVA-VE-16',capSz:'16 x 95',n:16,drill:18,hole:130,emb:125,stud:190,torque:80, edge:65, thk:180},
+ {m:'M20',cap:'SVA-VE-20',capSz:'20 x 175',n:20,drill:24,hole:175,emb:170,stud:260,torque:120,edge:85, thk:230},
+ {m:'M24',cap:'SVA-VE-24',capSz:'24 x 210',n:24,drill:28,hole:215,emb:210,stud:300,torque:180,edge:105,thk:270},
+ {m:'M30',cap:'SVA-VE-30',capSz:'30 x 265',n:30,drill:35,hole:275,emb:270,stud:380,torque:300,edge:130,thk:340}];
+const ROWS=[
+ {k:'drill',l:'ดอกสว่าน',u:'มม.'},
+ {k:'hole',l:'ความลึกรูเจาะ',u:'มม.'},
+ {k:'emb',l:'ความลึกติดตั้ง',u:'มม.'},
+ {k:'stud',l:'ความยาวสตัด',u:'มม.'},
+ {k:'torque',l:'แรงบิดขันน็อต',u:'Nm'},
+ {k:'edge',l:'ระยะขอบต่ำสุด',u:'มม.'},
+ {k:'thk',l:'คอนกรีตหนาต่ำสุด',u:'มม.'}];
+// ขนาดอ้างอิง (เส้นประ) เปลี่ยนได้ด้วย ?ref=M12 ใน URL ของ iframe
+const q=new URLSearchParams(location.search);
+let HERE=Math.max(0,D.findIndex(d=>d.m===(q.get('ref')||'M16').toUpperCase()));
+const MAX=Object.fromEntries(ROWS.map(r=>[r.k,Math.max(...D.map(d=>d[r.k]))]));
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function diff(a,b,k){const d=b[k]-a[k];if(!d)return 'เท่ากัน';const u=ROWS.find(r=>r.k===k).u;return (d>0?'+':'−')+Math.abs(d)+' '+u+' จาก '+a.m}
+
+function sect(d,g){
+  const top=-(d.stud-d.emb);
+  let s=`<svg viewBox="-175 -130 330 505" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ภาพตัดพุกเคมี ${d.m} ฝังลึก ${d.emb} มม. ในคอนกรีตหนา ${d.thk} มม.">`;
+  s+=`<rect x="${-d.edge}" y="0" width="${d.edge+150}" height="${d.thk}" class="cc"/>`;
+  for(let y=14;y<d.thk;y+=26)for(let x=-d.edge+9+(y%52?13:0);x<148;x+=26)s+=`<circle cx="${x}" cy="${y}" r="2" class="ccd"/>`;
+  s+=`<rect x="${-d.drill/2}" y="0" width="${d.drill}" height="${d.hole}" class="hl"/>`;
+  s+=`<rect x="${-d.drill/2}" y="0" width="${d.drill}" height="${d.emb}" class="rs"/>`;
+  s+=`<rect x="${-d.n/2}" y="${top}" width="${d.n}" height="${d.stud}" class="st"/>`;
+  for(let y=top+4;y<d.emb;y+=6)s+=`<line x1="${-d.n/2}" x2="${d.n/2}" y1="${y}" y2="${y+3}" class="th"/>`;
+  s+=`<rect x="${-d.n}" y="-3" width="${d.n*2}" height="3" class="nut"/>`;
+  s+=`<rect x="${-d.n*.85}" y="${-3-d.n*.8}" width="${d.n*1.7}" height="${d.n*.8}" class="nut"/>`;
+  if(g){const gt=-(g.stud-g.emb);
+    s+=`<rect x="${-g.n/2}" y="${gt}" width="${g.n}" height="${g.stud}" class="gh"/>`;
+    s+=`<line x1="${-g.edge}" x2="150" y1="${g.thk}" y2="${g.thk}" class="gh"/>`;
+    s+=`<text x="${d.drill/2+5}" y="${g.emb-4}" class="ght">${g.m}</text>`;}
+  s+=`<path d="M${-d.edge} -40v-12M0 -40v-12M${-d.edge} -46H0" class="dim"/>`;
+  s+=`<text x="${-d.edge}" y="-58" class="dt">ขอบ ${d.edge}</text>`;
+  s+=`<path d="M58 0h12M58 ${d.emb}h12M64 0V${d.emb}" class="dim"/>`;
+  s+=`<text x="74" y="${d.emb/2+6}" class="dt">ฝัง ${d.emb}</text>`;
+  s+=`<path d="M120 0h12M120 ${d.thk}h12M126 0V${d.thk}" class="dim"/>`;
+  s+=`<text x="132" y="${d.thk+22}" text-anchor="end" class="dt">หนา ${d.thk}</text>`;
+  return s+'</svg>';
+}
+
+const root=$('#app');
+let i=HERE;
+root.innerHTML=`<div class="s1">
+  <div class="fig" aria-live="polite"></div>
+  <div>
+    <div class="big"><b></b><span></span></div>
+    <div class="rng"><input type="range" min="0" max="${D.length-1}" step="1" aria-label="เลือกขนาดพุกเคมี"></div>
+    <div class="ticks" style="grid-template-columns:repeat(${D.length},1fr)">${D.map((d,k)=>`<button data-k="${k}">${d.m}</button>`).join('')}</div>
+    <div class="rows"></div>
+    <p class="fine">เส้นประสีน้ำเงินคือ ${D[HERE].m} ไว้เทียบว่าขนาดที่เลือกใหญ่หรือเล็กกว่าเท่าไร ค่าทั้งหมดเป็นเงื่อนไขขั้นต่ำสำหรับการติดตั้ง งานโครงสร้างต้องให้วิศวกรกำหนดขนาดเสมอ</p>
+  </div></div>`;
+const fig=$('.fig'), rng=$('input');
+function paint(){
+  const d=D[i];
+  fig.innerHTML=sect(d,i===HERE?null:D[HERE])+'<span class="tip">ลากซ้าย/ขวาบนรูปเพื่อเปลี่ยนขนาด</span>';
+  $('.big b').textContent=d.m;
+  $('.big span').innerHTML=`Stahl ${d.cap} · หลอด ${d.capSz} มม. ${i===HERE?'<span class="here">ขนาดอ้างอิง</span>':''}`;
+  rng.value=i; $$('.ticks button').forEach((b,k)=>b.classList.toggle('on',k===i));
+  $('.rows').innerHTML=ROWS.map(r=>`<div class="r"><span>${r.l}</span>
+    <span class="bar"><i style="width:${d[r.k]/MAX[r.k]*100}%"></i><u style="left:${D[HERE][r.k]/MAX[r.k]*100}%"></u></span>
+    <span class="v">${d[r.k]} <small>${r.u}</small><span class="delta">${i!==HERE?diff(D[HERE],d,r.k):'&nbsp;'}</span></span></div>`).join('');
+}
+rng.addEventListener('input',()=>{i=+rng.value;paint()});
+$$('.ticks button').forEach(b=>b.onclick=()=>{i=+b.dataset.k;paint()});
+let sx=null,si=0;
+fig.addEventListener('pointerdown',e=>{sx=e.clientX;si=i;fig.setPointerCapture(e.pointerId)});
+fig.addEventListener('pointermove',e=>{if(sx===null)return;const n=Math.max(0,Math.min(D.length-1,si+Math.round((e.clientX-sx)/36)));if(n!==i){i=n;paint()}});
+fig.addEventListener('pointerup',()=>sx=null);fig.addEventListener('pointercancel',()=>sx=null);
+paint();
+</script>
+</body>
+</html>
