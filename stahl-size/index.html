@@ -9,38 +9,38 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap">
 <style>
-/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีและฟอนต์ตาม style guide ของร้าน
-   สีกรมเข้ม = ขนาดที่เลือก / สีฟ้าอ่อน = ขนาดก่อนหน้า (เล็กกว่าหนึ่งขั้น) */
+/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีตาม style guide ของร้าน
+   กรม #14304D = ขนาดที่เลือก / เทาจาง = ขนาดก่อนหน้า (เล็กกว่าหนึ่งขั้น) / เหลือง #FFCD01 = จุดเน้น */
 :root{--bg:#ffffff;--sunk:#F6F8FA;--ink:#14304D;--text:#3A3F47;--muted:#6B7280;--line:#E3E7ED;--hi:#FFCD01;
-  --cur:#14304D;--prev:#7FA8C9;--prev-ink:#3C6E94;--prev-soft:#E4EEF6;
-  --concrete:#C9CDC8;--concrete-prev:#DDE4E9;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D}
+  --cur:#14304D;--prev:#DCE2E9;--prev-ink:#8A97A8;--prev-soft:#F1F3F6;
+  --concrete:#C9CDC8;--concrete-prev:#EEF0F2;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:Kanit,Tahoma,sans-serif;font-size:17px;line-height:1.5}
 .app{container-type:inline-size;padding:16px}
 .s1{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px}
 .fig{height:600px;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:8px;touch-action:pan-y;cursor:ew-resize}
 .big{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.big b{font-size:54px;line-height:1;color:var(--ink);font-weight:700}
+.big b{font-size:54px;line-height:1;color:var(--ink);font-weight:700;border-bottom:4px solid var(--hi);padding-bottom:2px}
 .big span{color:var(--muted);font-size:17px}
 .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px;font-size:16px}
 .legend span{display:inline-flex;align-items:center;gap:8px}
 .legend i{display:inline-block;width:22px;height:12px;border-radius:3px}
 .legend .c i{background:var(--cur)} .legend .p i{background:var(--prev)}
-.legend .p{color:var(--prev-ink)}
+.legend .p{color:var(--prev-ink)} .legend .p i{border:1px solid #C3CBD5}
 .rng{margin:14px 0 4px}
 input[type=range]{width:100%;accent-color:var(--ink);height:28px}
 .ticks{display:grid;font-size:15px;color:var(--muted);text-align:center;margin:0 -6px}
 .ticks button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:4px 0;border-radius:6px}
-.ticks button.on{color:#fff;background:var(--cur);font-weight:700}
-.ticks button.pv{color:var(--prev-ink);background:var(--prev-soft);font-weight:600}
+.ticks button.on{color:#fff;background:var(--cur);font-weight:700;box-shadow:inset 0 -3px 0 var(--hi)}
+.ticks button.pv{color:var(--prev-ink);background:var(--prev-soft);font-weight:400}
 .rows{display:grid;gap:4px;margin-top:12px}
 .r{display:grid;grid-template-columns:150px minmax(0,1fr) 150px;gap:12px;align-items:center;font-size:17px;min-height:56px;border-bottom:1px solid var(--line)}
 .bars{display:grid;gap:3px}
 .bars i{display:block;height:10px;border-radius:3px;transition:width .25s ease}
-.bars .bp{background:var(--prev)} .bars .bc{background:var(--cur);height:12px}
+.bars .bp{background:var(--prev);height:8px} .bars .bc{background:var(--cur);height:12px}
 .v{text-align:right;color:var(--ink);font-weight:700;line-height:1.25}
 .v small{color:var(--muted);font-weight:400;font-size:14px}
-.v .pvv{display:block;font-size:14px;font-weight:600;color:var(--prev-ink)}
+.v .pvv{display:block;font-size:14px;font-weight:400;color:var(--prev-ink)}
 .fine{font-size:15px;color:var(--muted);margin:10px 0 0}
 svg{display:block;width:100%;height:100%}
 .cc{fill:var(--concrete)} .ccp{fill:var(--concrete-prev)} .ccd{fill:var(--dot)} .hl{fill:var(--hole)} .rs{fill:var(--resin)}
