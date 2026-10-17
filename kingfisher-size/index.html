@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ขนาดพุกเคมีแบบปั่น King Fisher KR Resin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap">
+<style>
+/* หน้าเครื่องมือสำหรับฝังด้วย iframe ในบทความ schomesquare.co.th ใช้สีตาม style guide ของร้าน (กรม #14304D, เหลือง #FFCD01) */
+:root{--bg:#ffffff;--sunk:#F6F8FA;--ink:#14304D;--text:#3A3F47;--muted:#6B7280;--line:#E3E7ED;--hi:#FFCD01;
+  --concrete:#C9CDC8;--dot:#AEB4AD;--hole:#8B918B;--resin:#6F8E87;--stud:#8E989E;--edge:#4E585D}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Kanit,Tahoma,sans-serif;font-size:17px;line-height:1.5}
+.app{container-type:inline-size;padding:16px}
+.s1{display:grid;grid-template-columns:400px minmax(0,1fr);gap:28px}
+.fig{height:600px;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:8px;touch-action:pan-y;cursor:ew-resize}
+.big{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.big b{font-size:54px;line-height:1;color:var(--ink);font-weight:700;border-bottom:4px solid var(--hi);padding-bottom:2px}
+.big span{color:var(--muted);font-size:17px}
+.rng{margin:14px 0 4px}
+input[type=range]{width:100%;accent-color:var(--ink);height:28px}
+.ticks{display:grid;font-size:15px;color:var(--muted);text-align:center;margin:0 -6px}
+.ticks button{font:inherit;background:none;border:0;color:inherit;cursor:pointer;padding:4px 0;border-radius:6px}
+.ticks button.on{color:#fff;background:var(--ink);font-weight:700;box-shadow:inset 0 -3px 0 var(--hi)}
+.rows{display:grid;gap:4px;margin-top:12px}
+.r{display:grid;grid-template-columns:150px minmax(0,1fr) 110px;gap:12px;align-items:center;font-size:17px;min-height:52px;border-bottom:1px solid var(--line)}
+.bar{height:12px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:3px;transition:width .25s ease}
+.v{text-align:right;color:var(--ink);font-weight:700}
+.v small{color:var(--muted);font-weight:400;font-size:14px}
+.fine{font-size:15px;color:var(--muted);margin:10px 0 0}
+svg{display:block;width:100%;height:100%}
+.cc{fill:var(--concrete)} .ccd{fill:var(--dot)} .hl{fill:var(--hole)} .rs{fill:var(--resin)}
+.st{fill:var(--stud);stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
+.th{stroke:var(--edge);stroke-width:.8;opacity:.55}
+.nut{fill:var(--edge)}
+.dim{stroke:var(--ink);stroke-width:1.5;fill:none;vector-effect:non-scaling-stroke}
+.dash{stroke-dasharray:5 4}
+.t{font-family:Kanit,Tahoma,sans-serif;font-weight:600}
+.tc{fill:var(--ink)} .tl{fill:var(--muted);font-weight:400}
+button:focus-visible,input:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+@container (max-width:600px){
+  .app{padding:12px 4px}
+  .s1{grid-template-columns:1fr;gap:12px}
+  .fig{height:285px}
+  .big b{font-size:40px}
+  .rng{margin:8px 0 2px}
+  .rows{gap:0;margin-top:6px}
+  .r{grid-template-columns:minmax(0,1fr) auto;font-size:16px;min-height:38px}
+  .bar{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+// ค่าติดตั้งพุกเคมีแบบปั่น King Fisher KR Resin จาก Technical Data Sheet ในแคตตาล็อกร้าน (reference/kingfisher-kr-resin-spec.md)
+// เอกสารให้ความลึกรูเจาะกับความลึกฝังเป็นค่าเดียวกัน (hef / h0) และไม่ลงค่ารับแรงตามกฎของร้าน
+const D=[
+ {m:'M10',cap:'KR 1090', capSz:'10.5 x 85',n:10,drill:12,hole:90, stud:130,torque:20, edge:70, sp:70, thk:120},
+ {m:'M12',cap:'KR 12110',capSz:'12.5 x 95',n:12,drill:14,hole:110,stud:160,torque:40, edge:85, sp:85, thk:150},
+ {m:'M16',cap:'KR 16125',capSz:'16.5 x 95',n:16,drill:18,hole:125,stud:190,torque:60, edge:95, sp:95, thk:160},
+ {m:'M20',cap:'KR 20170',capSz:'23 x 160', n:20,drill:25,hole:170,stud:240,torque:120,edge:130,sp:130,thk:220},
+ {m:'M24',cap:'KR 24210',capSz:'23 x 190', n:24,drill:28,hole:210,stud:300,torque:150,edge:160,sp:160,thk:300}];
+const ROWS=[
+ {k:'drill',l:'ดอกสว่าน',u:'มม.'},
+ {k:'hole',l:'ความลึกรูเจาะ',u:'มม.'},
+ {k:'stud',l:'ความยาวสตัด',u:'มม.'},
+ {k:'torque',l:'แรงบิดขันน็อต',u:'Nm'},
+ {k:'edge',l:'ระยะขอบต่ำสุด',u:'มม.'},
+ {k:'sp',l:'ระยะห่างระหว่างพุก',u:'มม.'},
+ {k:'thk',l:'คอนกรีตหนาต่ำสุด',u:'มม.'}];
+// เปิดมาที่ M16 (ขนาดที่คนค้นมากสุด) เปลี่ยนได้ด้วย ?size=M12 ใน URL ของ iframe
+const q=new URLSearchParams(location.search);
+const START=Math.max(0,D.findIndex(d=>d.m===(q.get('size')||'M16').toUpperCase()));
+const MAX=Object.fromEntries(ROWS.map(r=>[r.k,Math.max(...D.map(d=>d[r.k]))]));
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+// วาดพุกที่เลือกพร้อมระยะครบทุกค่าในตาราง (มิลลิเมตรจริง ซูมให้พอดีกรอบ)
+function figure(d){
+  const top=-(d.stud-d.hole), H=d.thk-top, fs=Math.max(H*0.062,10), t=fs*.3;
+  const sx=d.edge, hw=d.drill/2;
+  const x2=sx+hw+fs*.6;   // เส้นวัดความลึกรูเจาะ (เท่ากับความลึกฝัง)
+  const R=x2+fs*3.6;      // ขอบขวาของคอนกรีต
+  const x3=R+fs*.7;       // เส้นวัดความหนาคอนกรีต
+  const xs=-fs*.9;        // เส้นวัดความยาวสตัด (ซ้าย นอกคอนกรีต)
+  const vx=xs-fs*3.7, vy=top-fs*.6, vw=Math.max(x3+fs*.9,sx+d.n+fs*7)-vx, vh=d.thk+fs*2.5-vy;
+  const N=(v)=>`<tspan class="tc" font-size="${fs}">${v}</tspan>`;
+  const L=(x,y,txt,o='')=>`<text x="${x}" y="${y}" class="t tl" font-size="${fs*.78}" ${o}>${txt}</text>`;
+  const V=(x,y,txt,o='')=>`<text x="${x}" y="${y}" class="t tc" font-size="${fs}" ${o}>${txt}</text>`;
+  const bar=(x,y0,y1)=>`<path d="M${x-t} ${y0}h${2*t}M${x-t} ${y1}h${2*t}M${x} ${y0}V${y1}" class="dim"/>`;
+  let s=`<svg viewBox="${vx} ${vy} ${vw} ${vh}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ภาพตัดพุกเคมี ${d.m} ดอกสว่าน ${d.drill} มม. เจาะลึก ${d.hole} มม. สตัดยาว ${d.stud} มม. ขันน็อต ${d.torque} Nm ระยะขอบ ${d.edge} มม. ระยะห่างระหว่างพุก ${d.sp} มม. คอนกรีตหนา ${d.thk} มม.">`;
+  s+=`<rect x="0" y="0" width="${R}" height="${d.thk}" class="cc"/>`;
+  const st=fs*1.5;
+  for(let y=st/2,r=0;y<d.thk;y+=st,r++)for(let x=st/2+(r%2?st/2:0);x<R;x+=st)s+=`<circle cx="${x}" cy="${y}" r="${(fs*.08).toFixed(1)}" class="ccd"/>`;
+  s+=`<rect x="${sx-hw}" y="0" width="${d.drill}" height="${d.hole}" class="hl"/>`;
+  s+=`<rect x="${sx-hw}" y="0" width="${d.drill}" height="${d.hole}" class="rs"/>`;
+  s+=`<rect x="${sx-d.n/2}" y="${top}" width="${d.n}" height="${d.stud}" class="st"/>`;
+  for(let y=top+4;y<d.hole;y+=6)s+=`<line x1="${sx-d.n/2}" x2="${sx+d.n/2}" y1="${y}" y2="${y+3}" class="th"/>`;
+  s+=`<rect x="${sx-d.n}" y="-3" width="${d.n*2}" height="3" class="nut"/>`;
+  s+=`<rect x="${sx-d.n*.85}" y="${-3-d.n*.8}" width="${d.n*1.7}" height="${d.n*.8}" class="nut"/>`;
+  // ความยาวสตัด (ซ้าย)
+  s+=bar(xs,top,d.hole)+`<path d="M${xs} ${top}H${sx-d.n/2}M${xs} ${d.hole}H${sx-d.n/2}" class="dim dash"/>`;
+  s+=L(xs-fs*.35,(top+d.hole)/2-fs*.2,'สตัดยาว','text-anchor="end"')+V(xs-fs*.35,(top+d.hole)/2+fs*.9,d.stud,'text-anchor="end"');
+  // ระยะขอบ (ใต้คอนกรีต วัดจากขอบถึงแกนพุก)
+  const ey=d.thk+fs*.7;
+  s+=`<path d="M0 ${ey-t}v${2*t}M${sx} ${ey-t}v${2*t}M0 ${ey}H${sx}M${sx} ${d.thk}V${ey}" class="dim"/>`;
+  s+=L(0,d.thk+fs*2.0,'ระยะขอบ '+N(d.edge));
+  // แรงบิด (ข้างน็อต)
+  s+=L(sx+d.n+fs*.3,-fs*.35,'ขันน็อต '+N(d.torque+' Nm'));
+  // ความลึกรูเจาะ
+  s+=bar(x2,0,d.hole);
+  s+=L(x2+fs*.3,d.hole*.45,'เจาะลึก')+V(x2+fs*.3,d.hole*.45+fs*1.05,d.hole);
+  // ดอกสว่าน (ใต้รู)
+  s+=`<path d="M${sx-hw} ${d.hole+fs*.45}H${sx+hw}M${sx-hw} ${d.hole+fs*.2}v${fs*.5}M${sx+hw} ${d.hole+fs*.2}v${fs*.5}" class="dim"/>`;
+  s+=L(sx+hw+fs*.3,d.hole+fs*1.0,'ดอกสว่าน '+N('Ø'+d.drill));
+  // ความหนาคอนกรีต (ขวา)
+  s+=bar(x3,0,d.thk)+L(x3,d.thk+fs*2.0,'คอนกรีตหนา '+N(d.thk),'text-anchor="end"');
+  return s+'</svg>';
+}
+
+const root=$('#app');
+let i=START;
+root.innerHTML=`<div class="s1">
+  <div class="fig" aria-live="polite"></div>
+  <div>
+    <div class="big"><b></b><span></span></div>
+    <div class="rng"><input type="range" min="0" max="${D.length-1}" step="1" aria-label="เลือกขนาดพุกเคมี"></div>
+    <div class="ticks" style="grid-template-columns:repeat(${D.length},1fr)">${D.map((d,k)=>`<button data-k="${k}">${d.m}</button>`).join('')}</div>
+    <div class="rows"></div>
+    <p class="fine">หน่วยในรูปเป็นมิลลิเมตร ค่าทั้งหมดเป็นเงื่อนไขขั้นต่ำสำหรับการติดตั้ง งานโครงสร้างต้องให้วิศวกรกำหนดขนาดเสมอ</p>
+  </div></div>`;
+const fig=$('.fig'), rng=$('input');
+function paint(){
+  const d=D[i];
+  fig.innerHTML=figure(d);
+  $('.big b').textContent=d.m;
+  $('.big span').textContent=`King Fisher ${d.cap} · หลอด ${d.capSz} มม.`;
+  rng.value=i; $$('.ticks button').forEach((b,k)=>b.classList.toggle('on',k===i));
+  $('.rows').innerHTML=ROWS.map(r=>`<div class="r"><span>${r.l}</span>
+    <span class="bar"><i style="width:${d[r.k]/MAX[r.k]*100}%"></i></span>
+    <span class="v">${d[r.k]} <small>${r.u}</small></span></div>`).join('');
+}
+rng.addEventListener('input',()=>{i=+rng.value;paint()});
+$$('.ticks button').forEach(b=>b.onclick=()=>{i=+b.dataset.k;paint()});
+let sx=null,si=0;
+fig.addEventListener('pointerdown',e=>{sx=e.clientX;si=i;fig.setPointerCapture(e.pointerId)});
+fig.addEventListener('pointermove',e=>{if(sx===null)return;const n=Math.max(0,Math.min(D.length-1,si+Math.round((e.clientX-sx)/36)));if(n!==i){i=n;paint()}});
+fig.addEventListener('pointerup',()=>sx=null);fig.addEventListener('pointercancel',()=>sx=null);
+paint();
+</script>
+</body>
+</html>
