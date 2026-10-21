@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>ขนาดพุกเคมีแบบปั่น King Fisher KR Resin</title>
+<title>ขนาดพุกเคมีแบบปั่น Kingfisher KR Resin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap">
@@ -58,7 +58,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--hi);outline-off
 <body>
 <div class="app" id="app"></div>
 <script>
-// ค่าติดตั้งพุกเคมีแบบปั่น King Fisher KR Resin จาก Technical Data Sheet ในแคตตาล็อกร้าน (reference/kingfisher-kr-resin-spec.md)
+// ค่าติดตั้งพุกเคมีแบบปั่น Kingfisher KR Resin จาก Technical Data Sheet ในแคตตาล็อกร้าน (reference/kingfisher-kr-resin-spec.md)
 // เอกสารให้ความลึกรูเจาะกับความลึกฝังเป็นค่าเดียวกัน (hef / h0) และไม่ลงค่ารับแรงตามกฎของร้าน
 const D=[
  {m:'M10',cap:'KR 1090', capSz:'10.5 x 85',n:10,drill:12,hole:90, stud:130,torque:20, edge:70, sp:70, thk:120},
@@ -139,7 +139,7 @@ function paint(){
   const d=D[i];
   fig.innerHTML=figure(d);
   $('.big b').textContent=d.m;
-  $('.big span').textContent=`King Fisher ${d.cap} · หลอด ${d.capSz} มม.`;
+  $('.big span').textContent=`Kingfisher ${d.cap} · หลอด ${d.capSz} มม.`;
   rng.value=i; $$('.ticks button').forEach((b,k)=>b.classList.toggle('on',k===i));
   $('.rows').innerHTML=ROWS.map(r=>`<div class="r"><span>${r.l}</span>
     <span class="bar"><i style="width:${d[r.k]/MAX[r.k]*100}%"></i></span>
